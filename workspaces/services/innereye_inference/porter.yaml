@@ -1,6 +1,6 @@
-name: tre-service-azureml
-version: 0.1.2
-description: "An Azure TRE service for Azure Machine Learning"
+name: tre-service-innereye-inference
+version: 0.1.0
+description: "An Azure TRE service for InnerEye inference service"
 registry: azuretre
 dockerfile: Dockerfile.tmpl
 
@@ -19,25 +19,21 @@ parameters:
     type: string
   - name: tre_id
     type: string
+  - name: azureml_workspace_name
+    type: string
   - name: tfstate_resource_group_name
     type: string
     description: "Resource group containing the Terraform state storage account"
+    env: MGMT_RESOURCE_GROUP_NAME
   - name: tfstate_storage_account_name
     type: string
     description: "The name of the Terraform state storage account"
+    env: MGMT_STORAGE_ACCOUNT_NAME
   - name: tfstate_container_name
-    env: tfstate_container_name
     type: string
     default: "tfstate"
     description: "The name of the Terraform state storage container"
-
-outputs:
-  - name: azureml_workspace_name
-    type: string
-  - name: azureml_acr_name
-    type: string
-  - name: azureml_storage_account_id
-    type: string
+    env: TERRAFORM_STATE_CONTAINER_NAME
 
 mixins:
   - exec
@@ -46,10 +42,11 @@ mixins:
 
 install:
   - terraform:
-      description: "Deploy Azure ML Service"
+      description: "Deploy workspace"
       vars:
         workspace_id: "{{ bundle.parameters.workspace_id }}"
         tre_id: "{{ bundle.parameters.tre_id }}"
+        azureml_workspace_name: "{{ bundle.parameters.azureml_workspace_name }}"
         arm_client_id: "{{ bundle.credentials.azure_client_id }}"
         arm_client_secret: "{{ bundle.credentials.azure_client_secret }}"
         arm_tenant_id: "{{ bundle.credentials.azure_tenant_id }}"
@@ -57,27 +54,25 @@ install:
         resource_group_name: "{{ bundle.parameters.tfstate_resource_group_name }}"
         storage_account_name: "{{ bundle.parameters.tfstate_storage_account_name }}"
         container_name: "{{ bundle.parameters.tfstate_container_name }}"
-        key: "{{ bundle.parameters.tre_id }}-ws-{{ bundle.parameters.workspace_id }}-svc-azureml"
-      outputs:
-      - name: azureml_workspace_name
-      - name: azureml_acr_name
-      - name: azureml_storage_account_id
+        key: "{{ bundle.parameters.tre_id }}-ws-{{ bundle.parameters.workspace_id }}-svc-innereye_deeplearning"
 
 upgrade:
   - exec:
-      description: "Upgrade Azure ML Service"
+      description: "Upgrade workspace"
       command: echo
       arguments:
         - "This workspace does not implement upgrade action"
 
 uninstall:
   - terraform:
-      description: "Deploy Azure ML Service"
+      description: "Tear down workspace"
       vars:
         workspace_id: "{{ bundle.parameters.workspace_id }}"
         tre_id: "{{ bundle.parameters.tre_id }}"
+        azureml_workspace_name: "{{ bundle.parameters.azureml_workspace_name }}"
+
       backendConfig:
         resource_group_name: "{{ bundle.parameters.tfstate_resource_group_name }}"
         storage_account_name: "{{ bundle.parameters.tfstate_storage_account_name }}"
         container_name: "{{ bundle.parameters.tfstate_container_name }}"
-        key: "{{ bundle.parameters.tre_id }}-ws-{{ bundle.parameters.workspace_id }}-svc-azureml"
+        key: "{{ bundle.parameters.tre_id }}-ws-{{ bundle.parameters.workspace_id }}-svc-innereye_deeplearning"

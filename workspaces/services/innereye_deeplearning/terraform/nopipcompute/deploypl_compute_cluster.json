@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vnet_name": {
-            "type": "string"
+            "type": "String"
         },
         "location": {
-            "type": "string",
+            "type": "String",
             "allowedValues": [
                 "eastus",
                 "southcentralus",
@@ -19,31 +19,31 @@
             }
         },
         "workspace_name": {
-            "type": "string"
+            "type": "String"
         },
         "cluster_name": {
-            "type": "string"
+            "type": "String"
         },
         "subnet_name": {
-            "type": "string"
+            "type": "String"
         },
         "admin_username": {
-            "type": "string",
+            "type": "String",
             "defaultValue": "azureuser"
         },
         "admin_user_password": {
-            "type": "securestring"
+            "type": "SecureString"
         },
         "vm_size_sku": {
-            "type": "string",
+            "type": "String",
             "defaultValue": "STANDARD_DS2_V2"
         },
         "min_node_count": {
-            "type": "int",
+            "type": "Int",
             "defaultValue": 0
         },
         "max_node_count": {
-            "type": "int"
+            "type": "Int"
         }
     },
     "variables": {},
@@ -53,6 +53,9 @@
             "apiVersion": "2020-05-15-preview",
             "name": "[concat(parameters('workspace_name'),'/',parameters('cluster_name'))]",
             "location": "[parameters('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "properties": {
                 "computeType": "AmlCompute",
                 "computeLocation": "[parameters('location')]",
@@ -75,5 +78,13 @@
                 }
             }
         }
-    ]
+    ],
+    "outputs": {
+
+        "cluster_principal_id": {
+            "value": "[reference(resourceId('Microsoft.MachineLearningServices/workspaces/computes', parameters('workspace_name'),parameters('cluster_name')),'2020-05-15-preview', 'Full').identity.principalId]",
+            "type": "String"
+        }
+
+    }
 }

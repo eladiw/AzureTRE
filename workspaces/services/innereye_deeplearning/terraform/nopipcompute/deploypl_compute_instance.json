@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vnet_name": {
-            "type": "string"
+            "type": "String"
         },
         "location": {
-            "type": "string",
+            "type": "String",
             "allowedValues": [
                 "eastus",
                 "southcentralus",
@@ -19,16 +19,16 @@
             }
         },
         "workspace_name": {
-            "type": "string"
+            "type": "String"
         },
         "instance_name": {
-            "type": "string"
+            "type": "String"
         },
         "subnet_name": {
-            "type": "string"
+            "type": "String"
         },
         "vm_size_sku": {
-            "type": "string",
+            "type": "String",
             "defaultValue": "STANDARD_DS2_V2"
         }
     },

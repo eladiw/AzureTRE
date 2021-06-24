@@ -86,6 +86,8 @@ module "api-webapp" {
   service_bus_resource_request_queue         = module.servicebus.workspacequeue
   service_bus_deployment_status_update_queue = module.servicebus.service_bus_deployment_status_update_queue
   managed_identity                           = module.identity.managed_identity
+  azurewebsites_dns_zone_id                  = module.network.azurewebsites_dns_zone_id
+
 }
 
 module "identity" {

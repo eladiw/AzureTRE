@@ -3,11 +3,11 @@ output "workspace_name" {
 }
 
 output "computeinstance_name" {
-    value = "ci-${local.service_resource_name_suffix}"
+    value = local.aml_compute_instance_name
 }
 
 output "computecluster_name" {
-    value = "cl-${local.service_resource_name_suffix}"
+    value = local.aml_compute_cluster_name
 }
 
 output "azureml_acr_name" {

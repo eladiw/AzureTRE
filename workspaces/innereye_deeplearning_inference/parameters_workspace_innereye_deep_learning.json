@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0-DRAFT+TODO",
-  "name": "innereye-deeplearning",
+  "name": "workspace-innereye-deeplearning",
   "created": "2021-06-03T11:54:54.0225968Z",
   "modified": "2021-06-03T11:54:54.0225968Z",
   "parameters": [
     {
-      "name": "workspace_id",
+      "name": "address_space",
       "source": {
-        "env": "WORKSPACE_ID"
+        "env": "ADDRESS_SPACE"
       }
     },
     {
@@ -17,15 +17,21 @@
       }
     },
     {
-      "name": "azureml_workspace_name",
+      "name": "azure_location",
       "source": {
-        "env": "AZUREML_WORKSPACE_NAME"
+        "env": "LOCATION"
       }
     },
     {
-      "name": "azureml_acr_name",
+      "name": "workspace_id",
       "source": {
-        "env": "AZUREML_ACR_NAME"
+        "env": "WORKSPACE_ID"
+      }
+    },
+    {
+      "name": "acr_name",
+      "source": {
+        "env": "ACR_NAME"
       }
     },
     {
@@ -44,6 +50,12 @@
       "name": "tfstate_storage_account_name",
       "source": {
         "env": "MGMT_STORAGE_ACCOUNT_NAME"
+      }
+    },
+    {
+      "name": "porter_driver",
+      "source": {
+        "env": "PORTER_DRIVER"
       }
     }
   ]
