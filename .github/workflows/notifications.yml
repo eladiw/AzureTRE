@@ -1,0 +1,26 @@
+name: "Build & Test"
+
+on:
+  schedule:
+    # 1am each night https://crontab.guru/#0_1_*_*_*
+    - cron: "0 1 * * *"
+  push:
+    branches: [ sakundu/channel-hooks ]
+  workflow_dispatch:
+
+jobs:
+  deploy_tre:
+    name: Deploy TRE
+    runs-on: ubuntu-latest
+    environment: Dev
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Notify dedicated teams channel
+      uses: sachinkundu/ms-teams-notification@1.4
+      with:
+        github-token: ${{ github.token }} # this will use the runner's token.
+        ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+        notification-summary: Blah blah blah 
+        notification-color: 17a2b8
+        timezone: America/Denver
