@@ -1,6 +1,6 @@
 name: tre-workspace-innereye-deeplearning-inference
 
-version: 0.1.4
+version: 0.1.5
 description: "A Azure TRE workspace with Azure Machine Learning, Dev Test Labs,  InnerEye deep learning and inference"
 registry: azuretre
 dockerfile: Dockerfile.tmpl
@@ -53,7 +53,7 @@ parameters:
     description: "The name of the Terraform state storage container"
     env: TERRAFORM_STATE_CONTAINER_NAME
   - name: porter_driver
-    default: "azure"
+    default: "docker"
     type: string
     description: "The porter driver - azure or docker"
     env: PORTER_DRIVER
@@ -72,6 +72,9 @@ install:
       flags:
         u: "{{ bundle.credentials.azure_client_id }}"
         p: "{{ bundle.credentials.azure_client_secret }}"
+  - exec:
+      description: "Write Env Vars to File"
+      command: ./env_to_file.sh 
   - exec:
       description: "Install Vanilla Workspace service"
       command: ./install_workspace_vanilla.sh

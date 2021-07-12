@@ -1,5 +1,5 @@
 name: tre-workspace-azureml-devtestlabs
-version: 0.1.4
+version: 0.1.5
 description: "A Azure TRE workspace with Azure Machine Learning and Dev Test Labs"
 registry: azuretre
 dockerfile: Dockerfile.tmpl
@@ -47,7 +47,7 @@ parameters:
     description: "The name of the Terraform state storage container"
     env: TERRAFORM_STATE_CONTAINER_NAME
   - name: porter_driver
-    default: "azure"
+    default: "docker"
     type: string
     description: "The porter driver - azure or docker"
 
@@ -65,8 +65,11 @@ install:
         u: "{{ bundle.credentials.azure_client_id }}"
         p: "{{ bundle.credentials.azure_client_secret }}"
   - exec:
+      description: "Write Env Vars to File"
+      command: ./env_to_file.sh 
+  - exec:
       description: "Install Vanilla Workspace service"
-      command: ./install_workspace_vanilla.sh
+      command: ./install_workspace_vanilla.sh 
   - exec:
       description: "Install DevTestLabs service"
       command: ./install_service_devtestlabs.sh

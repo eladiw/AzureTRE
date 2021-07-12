@@ -4,7 +4,7 @@ import logging
 import azure.functions as func
 
 from shared.cnab_builder import CNABBuilder
-from shared.logging import initialize_logging
+from shared.logger import initialize_logging
 from shared.service_bus import ServiceBus
 from resources import strings
 

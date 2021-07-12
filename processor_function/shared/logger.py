@@ -17,13 +17,15 @@ def initialize_logging(logging_level: int, correlation_id: str) -> logging.Logge
     :returns: A newly created logger adapter.
     """
     logger = logging.getLogger()
-    logger.addHandler(logging.StreamHandler())  # For logging into console
-    app_insights_connection_string = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
 
-    try:
-        logger.addHandler(AzureLogHandler(connection_string=app_insights_connection_string))
-    except ValueError as e:
-        logger.error(f"Failed to set Application Insights logger handler: {e}")
+    if not logger.handlers:
+        logger.addHandler(logging.StreamHandler())  # For logging into console
+        app_insights_connection_string = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
+
+        try:
+            logger.addHandler(AzureLogHandler(connection_string=app_insights_connection_string))
+        except ValueError as e:
+            logger.error(f"Failed to set Application Insights logger handler: {e}")
 
     config_integration.trace_integrations(['logging'])
     logging.basicConfig(level=logging_level, format='%(asctime)s traceId=%(traceId)s spanId=%(spanId)s %(message)s')
