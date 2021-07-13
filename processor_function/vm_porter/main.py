@@ -89,14 +89,14 @@ async def main():
                     full_output = full_output + output.decode("utf-8")
                     message_logger_adapter.debug(output.decode('utf8'))
 
-            message_logger_adapter.info(full_output.splitlines()[-20:])
-            message_logger_adapter.info(f"{installation_id}: Deployment job complete")
+            last_20_lines = full_output.split("\n")[-20:]
+            message_logger_adapter.info(f"{installation_id}: Deployment job complete: {last_20_lines}")
 
-            if "Error:" in full_output:
-                service_bus.send_status_update_message(msg.correlation_id, strings.RESOURCE_STATUS_FAILED, full_output.split("Error:", 1)[1])
-                message_logger_adapter.error(full_output.split("Error:", 1)[1])
+            if process.returncode != 0:
+                service_bus.send_status_update_message(msg.correlation_id, strings.RESOURCE_STATUS_FAILED, last_20_lines)
             else:
-                service_bus.send_status_update_message(msg.correlation_id, strings.RESOURCE_STATUS_DEPLOYED, full_output.split("Apply complete!", 1)[1])
+                service_bus.send_status_update_message(msg.correlation_id, strings.RESOURCE_STATUS_DEPLOYED, last_20_lines)
+                            
 
         except Exception as e:
             message_logger_adapter.error("Error occurred during deployment job")
