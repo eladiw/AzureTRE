@@ -134,6 +134,8 @@ jobs:
             export TF_VAR_resource_processor_client_secret=$RESOURCE_PROCESSOR_CLIENT_SECRET
             export TF_VAR_debug="false"
 
+            ./templates/core/terraform/import.sh module.appgateway.azurerm_key_vault_certificate.tlscert https://kv-cse-msr-dev.vault.azure.net/certificates/letsencrypt/aa2671feb7e64b66acbccb3108d485ec
+            cd ../../../
             make all
       - name: Notify dedicated teams channel
         uses: sachinkundu/ms-teams-notification@1.4
