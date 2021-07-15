@@ -1,0 +1,3 @@
+-r requirements-dev.txt
+-r management_api_app/requirements.txt
+-r processor_function/requirements.txt
