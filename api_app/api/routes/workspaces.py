@@ -15,6 +15,7 @@ from db.repositories.workspace_services import WorkspaceServiceRepository
 from models.domain.resource import ResourceType
 from models.domain.workspace import WorkspaceRole
 from models.schemas.operation import OperationInList, OperationInResponse
+from models.schemas.airlock_request import AirlockRequestInResponse, AirlockRequestInCreate, AirlockRequestInList
 from models.schemas.user_resource import UserResourceInResponse, UserResourceInCreate, UserResourcesInList
 from models.schemas.workspace import WorkspaceInCreate, WorkspacesInList, WorkspaceInResponse
 from models.schemas.workspace_service import WorkspaceServiceInCreate, WorkspaceServicesInList, WorkspaceServiceInResponse
@@ -265,6 +266,23 @@ async def retrieve_workspace_service_operations_by_workspace_service_id(workspac
 async def retrieve_workspace_service_operation_by_workspace_service_id_and_operation_id(workspace_service=Depends(get_workspace_service_by_id_from_path), operation=Depends(get_operation_by_id_from_path)) -> OperationInList:
     return OperationInResponse(operation=operation)
 
+
+# Airlock - Researcher API
+@user_resources_workspace_router.post("/workspaces/{workspace_id}/requests", status_code=status.HTTP_201_CREATED, response_model=AirlockRequestInResponse, name=strings.API_CREATE_AIRLOCK_DRAFT_REQUEST, dependencies=[Depends(get_workspace_by_id_from_path)])
+async def create_airlock_draft_request(workspace_id: str, airlock_request: AirlockRequestInCreate, user=Depends(get_current_workspace_owner_or_researcher_user)) -> AirlockRequestInList:
+    return {}
+
+
+@user_resources_workspace_router.get("/workspaces/{workspace_id}/requests", response_model=AirlockRequestInResponse, name=strings.API_GET_AIRLOCK_REQUEST, dependencies=[Depends(get_workspace_by_id_from_path)])
+async def get_airlock_request(workspace_id: str, user=Depends(get_current_workspace_owner_or_researcher_user)) -> AirlockRequestInList:
+    return {}
+
+@user_resources_workspace_router.post("/workspaces/{workspace_id}/requests/{airlock_request_id}/submit", status_code=status.HTTP_201_CREATED, response_model=AirlockRequestInResponse, name=strings.API_CREATE_AIRLOCK_DRAFT_REQUEST, dependencies=[Depends(get_workspace_by_id_from_path)])
+async def submit_airlock_draft_request(workspace_id: str, airlock_request: AirlockRequestInCreate, user=Depends(get_current_workspace_owner_or_researcher_user)) -> AirlockRequestInList:
+    return {}
+
+# Get airlock storage containers
+# cancel a request
 
 # USER RESOURCE ROUTES
 @user_resources_workspace_router.get("/workspaces/{workspace_id}/workspace-services/{service_id}/user-resources", response_model=UserResourcesInList, name=strings.API_GET_MY_USER_RESOURCES, dependencies=[Depends(get_workspace_by_id_from_path)])

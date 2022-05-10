@@ -1,0 +1,82 @@
+from pydantic import Field
+
+from models.domain.azuretremodel import AzureTREModel
+
+
+# class Status(str, Enum):
+#     """
+#     Operation status
+#     """
+#     Failed = strings.RESOURCE_STATUS_FAILED
+#     Deleted = strings.RESOURCE_STATUS_DELETED
+#     Deployed = strings.RESOURCE_STATUS_DEPLOYED
+#     Deleting = strings.RESOURCE_STATUS_DELETING
+#     Deploying = strings.RESOURCE_STATUS_DEPLOYING
+#     NotDeployed = strings.RESOURCE_STATUS_NOT_DEPLOYED  # Initial status of a resource
+#     DeletingFailed = strings.RESOURCE_STATUS_DELETING_FAILED
+#     InvokingAction = strings.RESOURCE_ACTION_STATUS_INVOKING
+#     ActionSucceeded = strings.RESOURCE_ACTION_STATUS_SUCCEEDED
+#     ActionFailed = strings.RESOURCE_ACTION_STATUS_FAILED
+#     PipelineDeploying = strings.RESOURCE_ACTION_STATUS_PIPELINE_DEPLOYING
+#     PipelineFailed = strings.RESOURCE_ACTION_STATUS_PIPELINE_FAILED
+#     PipelineSucceeded = strings.RESOURCE_ACTION_STATUS_PIPELINE_SUCCEEDED
+
+
+# class OperationStep(AzureTREModel):
+#     """
+#     Model to define a step in an operation. Each step references either a secondary resource or the primary resource (stepId=main)
+#     The steps are built up front as the operation is created from the initial user request.
+#     As each step completes, the next one is processed.
+#     """
+#     stepId: str = Field(title="stepId", description="Unique id identifying the step")
+#     stepTitle: Optional[str] = Field(title="stepTitle", description="Human readable title of what the step is for")
+#     resourceId: Optional[str] = Field(title="resourceId", description="Id of the resource to update")
+#     resourceTemplateName: Optional[str] = Field("", title="resourceTemplateName", description="Name of the template for the resource under change")
+#     resourceType: Optional[ResourceType] = Field(title="resourceType", description="Type of resource under change")
+#     resourceAction: Optional[str] = Field(title="resourceAction", description="Action - install / upgrade / uninstall etc")
+#     status: Optional[Status] = Field(Status.NotDeployed, title="Operation step status")
+#     message: Optional[str] = Field("", title="Additional operation step status information")
+#     updatedWhen: Optional[float] = Field("", title="POSIX Timestamp for When the operation step was updated")
+#
+#     def is_success(self) -> bool:
+#         return self.status in (
+#             Status.ActionSucceeded,
+#             Status.Deployed,
+#             Status.Deleted
+#         )
+#
+#     def is_failure(self) -> bool:
+#         return self.status in (
+#             Status.ActionFailed,
+#             Status.DeletingFailed,
+#             Status.Failed
+#         )
+
+
+class AirlockRequest(AzureTREModel):
+    """
+    AirlockRequest model
+    """
+    id: str = Field(title="Id", description="GUID identifying the operation")
+    # resourceId: str = Field(title="resourceId", description="GUID identifying the resource")
+    # resourcePath: str = Field(title="resourcePath", description="Path of the resource undergoing change, i.e. '/workspaces/guid/workspace-services/guid/'")
+    # resourceVersion: int = Field(0, title="resourceVersion", description="Version of the resource this operation relates to")
+    # status: Status = Field(Status.NotDeployed, title="Operation status")
+    # action: str = Field(title="action", description="Name of the action being performed on the resource, i.e. install, uninstall, start")
+    # message: str = Field("", title="Additional operation status information")
+    createdWhen: float = Field("", title="POSIX Timestamp for when the operation was submitted")
+    updatedWhen: float = Field("", title="POSIX Timestamp for When the operation was updated")
+    user: dict = {}
+    # steps: Optional[List[OperationStep]] = Field(None, title="Operation Steps")
+
+
+# class DeploymentStatusUpdateMessage(AzureTREModel):
+#     """
+#     Model for service bus message flowing back to API to update status in DB
+#     """
+#     operationId: UUID4 = Field(title="", description="")
+#     stepId: str = Field(title="", description="")
+#     id: UUID4 = Field(title="", description="")
+#     status: Status = Field(title="", description="")
+#     message: str = Field(title="", description="")
+#     outputs: List[Output] = Field(title="", description="", default=[])
